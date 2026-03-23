@@ -38,7 +38,10 @@ public class AuthService {
         profile.setPublicUserId("TSP" + java.util.UUID.randomUUID().toString().substring(0, 4).toUpperCase());
         profile.setWalletBalance(0.0);
         profile.setTotalPoints(0.0);
-        passengerProfileRepository.save(profile);
+        PassengerProfile savedProfile = passengerProfileRepository.save(profile);
+        if (savedProfile.getId() == null) {
+            throw new BadRequestException("Failed to create passenger profile");
+        }
 
         return new AuthResponse(user.getId(), user.getFullName(), user.getEmail(), user.getRole().name(), user.getToken(), "Passenger registered successfully");
     }

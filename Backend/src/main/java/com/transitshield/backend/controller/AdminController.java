@@ -38,7 +38,7 @@ public class AdminController {
      * Only one active QR per bus at any time.
      */
     @PostMapping("/buses/{busId}/generate-qr")
-    public ResponseEntity<BusQrCodeDto> generateQr(@PathVariable Long busId) {
+    public ResponseEntity<BusQrCodeDto> generateQr(@PathVariable("busId") Long busId) {
         return ResponseEntity.ok(qrFlowService.generateQrForBus(busId));
     }
 

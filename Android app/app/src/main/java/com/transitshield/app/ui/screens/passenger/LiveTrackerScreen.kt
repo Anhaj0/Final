@@ -37,11 +37,15 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 fun LiveTrackerScreen(navController: NavController) {
     var buses by remember { mutableStateOf<List<BusLocationDto>>(emptyList()) }
     var selectedRoute by remember { mutableStateOf("All") }
+    var loadError by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
         try {
             buses = RetrofitClient.apiService.getLiveLocations()
-        } catch (e: Exception) {}
+            loadError = null
+        } catch (e: Exception) {
+            loadError = e.message ?: "Failed to load live bus locations."
+        }
     }
 
     Scaffold(
@@ -128,6 +132,23 @@ fun LiveTrackerScreen(navController: NavController) {
             }
 
             // Route Filter Chips
+            loadError?.let { error ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    colors = CardDefaults.cardColors(containerColor = RedError.copy(alpha = 0.12f)),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, RedError.copy(alpha = 0.35f))
+                ) {
+                    Text(
+                        text = error,
+                        color = RedError,
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
+            }
+
             val availableRoutes = listOf("All") + buses.mapNotNull { it.routeVariantId?.toString() }.distinct()
             LazyRow(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),

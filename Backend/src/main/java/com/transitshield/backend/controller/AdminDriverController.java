@@ -39,7 +39,7 @@ public class AdminDriverController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<DriverProfileDto> getByUserId(@PathVariable Long userId) {
+    public ResponseEntity<DriverProfileDto> getByUserId(@PathVariable("userId") Long userId) {
         DriverProfile profile = driverProfileRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Driver profile not found for user ID: " + userId));
         return ResponseEntity.ok(mapToDto(profile));

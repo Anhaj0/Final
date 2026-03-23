@@ -8,6 +8,7 @@ public class LostItemReportDto {
     private Long id;
     private Long reporterUserId;
     private String reporterName;
+    private String reporterPhoneNumber;
     private String reporterRole;
 
     private String itemTitle;

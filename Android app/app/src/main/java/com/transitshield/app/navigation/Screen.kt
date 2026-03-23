@@ -18,6 +18,7 @@ sealed class Screen(val route: String) {
     object Rewards : Screen("rewards")
     object ComplaintSubmission : Screen("complaint_submission")
     object LostItemReport : Screen("lost_item_report")
+    object PassengerTasks : Screen("passenger_tasks")
     object RecentTrips : Screen("recent_trips")
     object PassengerProfile : Screen("passenger_profile")
 

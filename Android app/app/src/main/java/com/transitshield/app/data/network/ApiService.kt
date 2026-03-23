@@ -82,6 +82,9 @@ interface ApiService {
     @GET("driver/assigned-bus/qr")
     suspend fun getAssignedBusQr(): BusQrCodeDto
 
+    @GET("driver/lost-items")
+    suspend fun getDriverLostItems(): List<LostItemReportDto>
+
     @GET("tickets/assignments/active")
     suspend fun getActiveAssignments(): List<BusAssignmentDto>
 
@@ -96,4 +99,10 @@ interface ApiService {
     @GET("lost-items/me")
     suspend fun getMyLostItemReports(): List<LostItemReportDto>
 
+    // ─── Passenger Tasks ───────────────────────────────────
+    @POST("tasks/location")
+    suspend fun submitTaskLocation(@Body request: PassengerTaskLocationRequest): PassengerTaskResponse
+
+    @POST("tasks/capacity")
+    suspend fun submitTaskCapacity(@Body request: PassengerTaskCapacityRequest): PassengerTaskResponse
 }

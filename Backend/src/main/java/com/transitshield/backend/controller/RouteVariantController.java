@@ -20,7 +20,7 @@ public class RouteVariantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RouteVariantDto> getById(@PathVariable Long id) {
+    public ResponseEntity<RouteVariantDto> getById(@PathVariable("id") Long id) {
         RouteVariantDto dto = routeVariantService.findById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
@@ -31,13 +31,13 @@ public class RouteVariantController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RouteVariantDto> update(@PathVariable Long id, @RequestBody RouteVariantDto dto) {
+    public ResponseEntity<RouteVariantDto> update(@PathVariable("id") Long id, @RequestBody RouteVariantDto dto) {
         RouteVariantDto updated = routeVariantService.update(id, dto);
         return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         routeVariantService.delete(id);
         return ResponseEntity.noContent().build();
     }

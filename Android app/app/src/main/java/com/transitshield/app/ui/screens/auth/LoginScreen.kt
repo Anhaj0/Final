@@ -46,15 +46,7 @@ fun LoginScreen(
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("TSProps", Context.MODE_PRIVATE) }
     var showIpDialog by remember { mutableStateOf(false) }
-    var ipInput by remember { mutableStateOf(prefs.getString("ip_address", "10.0.2.2") ?: "10.0.2.2") }
-
-    LaunchedEffect(ipInput) {
-        if (ipInput != "10.0.2.2" && ipInput.isNotBlank()) {
-            RetrofitClient.customBaseUrl = "http://$ipInput:8080/api/"
-        } else {
-            RetrofitClient.customBaseUrl = null
-        }
-    }
+    var ipInput by remember { mutableStateOf(prefs.getString("ip_address", "192.168.8.196") ?: "192.168.8.196") }
 
     if (showIpDialog) {
         AlertDialog(
@@ -71,11 +63,6 @@ fun LoginScreen(
             confirmButton = {
                 Button(onClick = {
                     prefs.edit().putString("ip_address", ipInput).apply()
-                    if (ipInput != "10.0.2.2" && ipInput.isNotBlank()) {
-                        RetrofitClient.customBaseUrl = "http://$ipInput:8080/api/"
-                    } else {
-                        RetrofitClient.customBaseUrl = null
-                    }
                     showIpDialog = false
                 }) { Text("Save") }
             },
@@ -271,8 +258,8 @@ fun LoginScreen(
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text("Server Connection", color = TextMuted, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(4.dp))
-                    Text("Emulator: 10.0.2.2:8080", color = TextSecondary, fontSize = 11.sp)
-                    Text("Real device: set your laptop Wi-Fi IP in Settings.", color = TextSecondary, fontSize = 11.sp)
+                    Text("Backend: ${RetrofitClient.BASE_URL}", color = TextSecondary, fontSize = 11.sp)
+                    Text("Real device target IP: 192.168.8.196", color = TextSecondary, fontSize = 11.sp)
                 }
             }
         }

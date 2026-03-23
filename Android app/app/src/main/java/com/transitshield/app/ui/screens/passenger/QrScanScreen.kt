@@ -1,14 +1,38 @@
 package com.transitshield.app.ui.screens.passenger
 
-import androidx.compose.animation.core.*
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QrCodeScanner
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,10 +43,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanIntentResult
+import com.journeyapps.barcodescanner.ScanOptions
 import com.transitshield.app.navigation.Screen
 import com.transitshield.app.ui.components.AppTopBar
 import com.transitshield.app.ui.components.PrimaryButton
-import com.transitshield.app.ui.theme.*
+import com.transitshield.app.ui.theme.BgCard
+import com.transitshield.app.ui.theme.BgDeep
+import com.transitshield.app.ui.theme.BlueElectric
+import com.transitshield.app.ui.theme.BorderSubtle
+import com.transitshield.app.ui.theme.OrangeWarning
+import com.transitshield.app.ui.theme.TextPrimary
+import com.transitshield.app.ui.theme.TextSecondary
 
 @Composable
 fun QrScanScreen(navController: NavController) {
@@ -46,6 +79,20 @@ fun QrScanScreen(navController: NavController) {
         label = "borderAlpha"
     )
 
+    var infoMessage by remember { mutableStateOf<String?>(null) }
+
+    val scannerLauncher = rememberLauncherForActivityResult(
+        contract = ScanContract()
+    ) { result: ScanIntentResult ->
+        val scannedValue = result.contents
+        if (!scannedValue.isNullOrBlank()) {
+            infoMessage = "QR scanned successfully"
+            navController.navigate(Screen.TripDetails.route)
+        } else {
+            infoMessage = "No QR code detected. Please try again."
+        }
+    }
+
     Scaffold(
         topBar = { AppTopBar(title = "Scan QR Code", onBack = { navController.popBackStack() }) },
         containerColor = BgDeep
@@ -67,7 +114,6 @@ fun QrScanScreen(navController: NavController) {
 
             Spacer(Modifier.height(32.dp))
 
-            // Fake Scanner Frame
             Box(
                 modifier = Modifier
                     .size(260.dp)
@@ -76,10 +122,8 @@ fun QrScanScreen(navController: NavController) {
                     .border(2.dp, BlueElectric.copy(alpha = borderAlpha), RoundedCornerShape(24.dp)),
                 contentAlignment = Alignment.TopCenter
             ) {
-                // Corner decorations
                 ScannerCorners()
 
-                // Scan Line
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -119,11 +163,29 @@ fun QrScanScreen(navController: NavController) {
                 }
             }
 
-            Spacer(Modifier.height(32.dp))
+            infoMessage?.let {
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    text = it,
+                    color = OrangeWarning,
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            Spacer(Modifier.height(20.dp))
 
             PrimaryButton(
-                text = "Simulate Successful Scan",
-                onClick = { navController.navigate(Screen.TripDetails.route) }
+                text = "Scan Bus QR",
+                onClick = {
+                    val options = ScanOptions().apply {
+                        setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+                        setPrompt("Scan bus QR code")
+                        setBeepEnabled(true)
+                        setOrientationLocked(false)
+                    }
+                    scannerLauncher.launch(options)
+                }
             )
 
             Spacer(Modifier.height(12.dp))
@@ -142,22 +204,21 @@ private fun ScannerCorners() {
     val cornerColor = BlueElectric
 
     Box(modifier = Modifier.fillMaxSize()) {
-        // Top-left
         Row(modifier = Modifier.align(Alignment.TopStart).padding(12.dp)) {
             Box(modifier = Modifier.size(cornerThickness, cornerSize).background(cornerColor))
             Box(modifier = Modifier.size(cornerSize - cornerThickness, cornerThickness).background(cornerColor))
         }
-        // Top-right
+
         Row(modifier = Modifier.align(Alignment.TopEnd).padding(12.dp)) {
             Box(modifier = Modifier.size(cornerSize - cornerThickness, cornerThickness).background(cornerColor))
             Box(modifier = Modifier.size(cornerThickness, cornerSize).background(cornerColor))
         }
-        // Bottom-left
+
         Column(modifier = Modifier.align(Alignment.BottomStart).padding(12.dp)) {
             Box(modifier = Modifier.size(cornerSize, cornerThickness).background(cornerColor))
             Box(modifier = Modifier.size(cornerThickness, cornerSize - cornerThickness).background(cornerColor))
         }
-        // Bottom-right
+
         Column(modifier = Modifier.align(Alignment.BottomEnd).padding(12.dp), horizontalAlignment = Alignment.End) {
             Box(modifier = Modifier.size(cornerSize, cornerThickness).background(cornerColor))
             Box(modifier = Modifier.size(cornerThickness, cornerSize - cornerThickness).background(cornerColor))

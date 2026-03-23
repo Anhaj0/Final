@@ -58,12 +58,12 @@ public class PassengerTripController {
     }
 
     @GetMapping("/passenger/{passengerId}/active")
-    public ResponseEntity<PassengerTripDto> getActiveTrip(@PathVariable Long passengerId) {
+    public ResponseEntity<PassengerTripDto> getActiveTrip(@PathVariable("passengerId") Long passengerId) {
         return ResponseEntity.ok(tripService.getActiveTrip(passengerId));
     }
 
     @GetMapping("/passenger/{passengerId}/history")
-    public ResponseEntity<List<PassengerTripDto>> getTripHistory(@PathVariable Long passengerId) {
+    public ResponseEntity<List<PassengerTripDto>> getTripHistory(@PathVariable("passengerId") Long passengerId) {
         return ResponseEntity.ok(tripService.getTripHistory(passengerId));
     }
 }

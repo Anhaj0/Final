@@ -34,7 +34,8 @@ data class UserDto(
     val email: String?,
     val phoneNumber: String?,
     val role: String?,
-    val isActive: Boolean?
+    val isActive: Boolean?,
+    val walletBalance: Double? = null
 )
 
 // ─── QR ──────────────────────────────────────────────────
@@ -277,6 +278,7 @@ data class LostItemReportDto(
     val id: Long?,
     val reporterUserId: Long?,
     val reporterName: String?,
+    val reporterPhoneNumber: String?,
     val reporterRole: String?,
     val itemTitle: String?,
     val description: String?,
@@ -290,4 +292,22 @@ data class LostItemReportDto(
     val resolutionNotes: String?,
     val createdAt: String?,
     val updatedAt: String?
+)
+
+data class PassengerTaskLocationRequest(
+    val busId: Long,
+    val latitude: Double,
+    val longitude: Double
+)
+
+data class PassengerTaskCapacityRequest(
+    val busId: Long,
+    val passengerCount: Int
+)
+
+data class PassengerTaskResponse(
+    val message: String?,
+    val awardedPoints: Double?,
+    val totalPoints: Double?,
+    val averageCapacity: Double?
 )

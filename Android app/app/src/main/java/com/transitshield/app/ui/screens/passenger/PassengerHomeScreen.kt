@@ -18,10 +18,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import android.widget.Toast
 import com.transitshield.app.data.network.RetrofitClient
 import com.transitshield.app.data.network.dto.UserDto
 import com.transitshield.app.navigation.Screen
@@ -30,17 +32,21 @@ import com.transitshield.app.ui.theme.*
 
 @Composable
 fun PassengerHomeScreen(navController: NavController) {
+    val context = LocalContext.current
     var user by remember { mutableStateOf<UserDto?>(null) }
+    var walletBalance by remember { mutableStateOf(0.0) }
     var points by remember { mutableStateOf(0.0) }
     var selectedTab by remember { mutableStateOf(0) }
 
     androidx.compose.runtime.LaunchedEffect(Unit) {
         try {
-            user = RetrofitClient.apiService.getMe()
+            val me = RetrofitClient.apiService.getMe()
+            user = me
+            walletBalance = me.walletBalance ?: 0.0
             val balanceMap = RetrofitClient.apiService.getMyBalance()
-            points = balanceMap["points"] ?: 0.0
+            points = balanceMap["totalPoints"] ?: 0.0
         } catch (e: Exception) {
-            // handle
+            Toast.makeText(context, e.message ?: "Failed to load profile", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -95,7 +101,7 @@ fun PassengerHomeScreen(navController: NavController) {
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
                 // Wallet Card
                 WalletCard(
-                    balance = "0.00",
+                    balance = String.format("%.2f", walletBalance),
                     points = String.format("%.1f", points)
                 )
 
@@ -115,6 +121,7 @@ fun PassengerHomeScreen(navController: NavController) {
                     ActionItem("Scan QR\n/ Ticket", Icons.Default.QrCodeScanner, BlueElectric, Screen.QrScan.route),
                     ActionItem("Live\nTracker", Icons.Default.Map, GreenSuccess, Screen.LiveTracker.route),
                     ActionItem("Rewards", Icons.Default.Star, OrangeWarning, Screen.Rewards.route),
+                    ActionItem("Tasks", Icons.Default.TaskAlt, PurpleInfo, Screen.PassengerTasks.route),
                     ActionItem("Lost Item", Icons.Default.FindInPage, PurpleInfo, Screen.LostItemReport.route),
                     ActionItem("Complaint", Icons.Default.Report, RedError, Screen.ComplaintSubmission.route),
                     ActionItem("My Trips", Icons.Default.History, BlueLight, Screen.RecentTrips.route)

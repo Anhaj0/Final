@@ -16,10 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import android.widget.Toast
 import com.transitshield.app.data.network.RetrofitClient
 import com.transitshield.app.data.network.dto.UserDto
 import com.transitshield.app.navigation.Screen
@@ -29,15 +31,20 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun DriverProfileScreen(navController: NavController) {
+    val context = LocalContext.current
     val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
     var user by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf<UserDto?>(null) }
     var isEditing by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
+    var isLoading by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(true) }
+    var errorMessage by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf<String?>(null) }
     
     var editName by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("") }
     var editAge by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("") }
     var editPhone by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("") }
 
     androidx.compose.runtime.LaunchedEffect(Unit) {
+        isLoading = true
+        errorMessage = null
         try {
             val me = RetrofitClient.apiService.getMe()
             user = me
@@ -45,7 +52,10 @@ fun DriverProfileScreen(navController: NavController) {
             editAge = me.age?.toString() ?: ""
             editPhone = me.phoneNumber ?: ""
         } catch (e: Exception) {
-            // handle error
+            errorMessage = e.message ?: "Failed to load profile"
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+        } finally {
+            isLoading = false
         }
     }
 
@@ -82,6 +92,14 @@ fun DriverProfileScreen(navController: NavController) {
                     Text(user?.fullName ?: "Loading...", color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                     Text(user?.email ?: "", color = TextSecondary, fontSize = 13.sp)
                     Spacer(Modifier.height(12.dp))
+                    if (isLoading) {
+                        CircularProgressIndicator(color = BlueElectric, strokeWidth = 2.dp)
+                        Spacer(Modifier.height(12.dp))
+                    }
+                    errorMessage?.let {
+                        Text(it, color = RedError, fontSize = 12.sp)
+                        Spacer(Modifier.height(12.dp))
+                    }
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         StatusBadge(user?.role ?: "DRIVER")
                         if (isEditing) {
@@ -102,6 +120,9 @@ fun DriverProfileScreen(navController: NavController) {
                                         user = updated
                                         isEditing = false
                                     } catch (e: Exception) {
+                                        val message = e.message ?: "Failed to update profile"
+                                        errorMessage = message
+                                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             }) { Text("Save") }

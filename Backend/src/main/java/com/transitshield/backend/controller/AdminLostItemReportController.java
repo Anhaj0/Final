@@ -18,13 +18,13 @@ public class AdminLostItemReportController {
     private final LostItemReportService lostItemReportService;
 
     @GetMapping
-    public ResponseEntity<List<LostItemReportDto>> getAll(@RequestParam(required = false) LostItemStatus status) {
+    public ResponseEntity<List<LostItemReportDto>> getAll(@RequestParam(value = "status", required = false) LostItemStatus status) {
         return ResponseEntity.ok(lostItemReportService.getAll(status));
     }
 
     @PutMapping("/{reportId}/status")
     public ResponseEntity<LostItemReportDto> updateStatus(
-            @PathVariable Long reportId,
+            @PathVariable("reportId") Long reportId,
             @RequestBody LostItemStatusUpdateRequest request
     ) {
         return ResponseEntity.ok(lostItemReportService.updateStatus(reportId, request));

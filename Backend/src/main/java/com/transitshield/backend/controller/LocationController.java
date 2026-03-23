@@ -28,12 +28,12 @@ public class LocationController {
     }
 
     @GetMapping("/bus/{busId}")
-    public ResponseEntity<BusLocationDto> getBusLocation(@PathVariable Long busId) {
+    public ResponseEntity<BusLocationDto> getBusLocation(@PathVariable("busId") Long busId) {
         return ResponseEntity.ok(locationService.getBusLocation(busId));
     }
 
     @GetMapping("/route-variant/{routeVariantId}")
-    public ResponseEntity<List<BusLocationDto>> getRouteVariantLocations(@PathVariable Long routeVariantId) {
+    public ResponseEntity<List<BusLocationDto>> getRouteVariantLocations(@PathVariable("routeVariantId") Long routeVariantId) {
         return ResponseEntity.ok(locationService.getRouteVariantLocations(routeVariantId));
     }
 }

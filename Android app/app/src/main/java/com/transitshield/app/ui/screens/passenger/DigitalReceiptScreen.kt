@@ -20,7 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.transitshield.app.navigation.Screen
 import com.transitshield.app.ui.components.*
 import com.transitshield.app.ui.theme.*
 
@@ -128,25 +127,9 @@ fun DigitalReceiptScreen(navController: NavController) {
 
             Spacer(Modifier.height(20.dp))
 
-            PrimaryButton(
-                text = "View Active Trip",
-                onClick = { navController.navigate(Screen.ActiveTrip.route) }
-            )
-
-            Spacer(Modifier.height(10.dp))
-
-            SecondaryButton(
-                text = "Show to Conductor",
-                onClick = { navController.navigate(Screen.ConductorVerification.route) }
-            )
-
-            Spacer(Modifier.height(10.dp))
-
             TextButton(
                 onClick = {
-                    navController.navigate(Screen.PassengerHome.route) {
-                        popUpTo(Screen.PassengerHome.route) { inclusive = false }
-                    }
+                    navController.popBackStack()
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

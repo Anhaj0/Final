@@ -20,7 +20,7 @@ public class RouteVariantStopController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RouteVariantStopDto> getById(@PathVariable Long id) {
+    public ResponseEntity<RouteVariantStopDto> getById(@PathVariable("id") Long id) {
         RouteVariantStopDto dto = routeVariantStopService.findById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
@@ -31,13 +31,13 @@ public class RouteVariantStopController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RouteVariantStopDto> update(@PathVariable Long id, @RequestBody RouteVariantStopDto dto) {
+    public ResponseEntity<RouteVariantStopDto> update(@PathVariable("id") Long id, @RequestBody RouteVariantStopDto dto) {
         RouteVariantStopDto updated = routeVariantStopService.update(id, dto);
         return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         routeVariantStopService.delete(id);
         return ResponseEntity.noContent().build();
     }

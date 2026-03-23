@@ -15,5 +15,6 @@ public class UserDto {
     private String password;
     private UserRole role;
     private Boolean isActive;
+    private Double walletBalance;
     private LocalDateTime createdAt;
 }

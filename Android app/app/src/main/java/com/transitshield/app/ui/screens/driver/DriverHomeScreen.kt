@@ -1,528 +1,217 @@
 package com.transitshield.app.ui.screens.driver
 
-import android.content.ContentValues
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Color as AndroidColor
-import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Dashboard
+import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
-import com.journeyapps.barcodescanner.ScanContract
-import com.journeyapps.barcodescanner.ScanIntentResult
-import com.journeyapps.barcodescanner.ScanOptions
 import com.transitshield.app.data.network.RetrofitClient
-import com.transitshield.app.data.network.dto.*
+import com.transitshield.app.data.network.dto.LostItemReportDto
 import com.transitshield.app.navigation.Screen
-import com.transitshield.app.ui.components.*
-import com.transitshield.app.ui.theme.*
-import kotlinx.coroutines.launch
+import com.transitshield.app.ui.components.AppTopBar
+import com.transitshield.app.ui.theme.BgCard
+import com.transitshield.app.ui.theme.BgDeep
+import com.transitshield.app.ui.theme.BgSurface
+import com.transitshield.app.ui.theme.BlueElectric
+import com.transitshield.app.ui.theme.BorderSubtle
+import com.transitshield.app.ui.theme.RedError
+import com.transitshield.app.ui.theme.TextMuted
+import com.transitshield.app.ui.theme.TextPrimary
+import com.transitshield.app.ui.theme.TextSecondary
 
 @Composable
 fun DriverHomeScreen(navController: NavController) {
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
+    var loading by remember { mutableStateOf(true) }
+    var error by remember { mutableStateOf<String?>(null) }
+    var lostItems by remember { mutableStateOf<List<LostItemReportDto>>(emptyList()) }
 
-    var selectedTab by remember { mutableStateOf(0) }
-    var dashboard by remember { mutableStateOf<DriverDashboardDto?>(null) }
-    var schedule by remember { mutableStateOf<DriverScheduleDto?>(null) }
-    var alerts by remember { mutableStateOf<List<DriverAlertDto>>(emptyList()) }
-    var assignedQr by remember { mutableStateOf<BusQrCodeDto?>(null) }
-    var validationResult by remember { mutableStateOf<TicketValidationResponse?>(null) }
-    var infoMessage by remember { mutableStateOf<String?>(null) }
-    var showQrDialog by remember { mutableStateOf(false) }
-
-    val scannerLauncher = rememberLauncherForActivityResult(
-        contract = ScanContract()
-    ) { result: ScanIntentResult ->
-        val scannedValue = result.contents
-        if (!scannedValue.isNullOrBlank()) {
-            scope.launch {
-                runCatching {
-                    RetrofitClient.apiService.validatePassengerTicket(
-                        TicketValidationRequest(scannedValue)
-                    )
-                }.onSuccess {
-                    validationResult = it
-                    selectedTab = 2
-                }.onFailure {
-                    infoMessage = it.message ?: "Ticket validation failed"
-                }
-            }
-        }
-    }
-
-    fun refreshAll() {
-        scope.launch {
-            runCatching { RetrofitClient.apiService.getDriverDashboard() }.onSuccess { dashboard = it }
-            runCatching { RetrofitClient.apiService.getDriverSchedule() }.onSuccess { schedule = it }
-            runCatching { RetrofitClient.apiService.getDriverAlerts() }.onSuccess { alerts = it }
-            runCatching { RetrofitClient.apiService.getAssignedBusQr() }.onSuccess { assignedQr = it }
-        }
-    }
-
-    LaunchedEffect(Unit) { refreshAll() }
-
-    val qrBitmap = remember(assignedQr?.qrToken) {
-        assignedQr?.qrToken?.let { generateQrBitmap(it) }
+    LaunchedEffect(Unit) {
+        loading = true
+        error = null
+        runCatching { RetrofitClient.apiService.getDriverLostItems() }
+            .onSuccess { lostItems = it }
+            .onFailure { error = it.message ?: "Failed to load active alerts" }
+        loading = false
     }
 
     Scaffold(
+        topBar = { AppTopBar(title = "Driver Dashboard", onBack = { navController.popBackStack() }) },
         containerColor = BgDeep,
         bottomBar = {
             DriverBottomNav(
-                selectedTab = selectedTab,
-                onTabSelected = { selectedTab = it },
-                navController = navController,
-                alertCount = alerts.size
+                onProfileClick = { navController.navigate(Screen.DriverProfile.route) }
             )
         }
     ) { innerPadding ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .background(BgDeep)
+                .padding(innerPadding),
+            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            DriverHeader(dashboard)
-
-            infoMessage?.let {
-                Text(
-                    text = it,
-                    color = OrangeWarning,
-                    fontSize = 12.sp,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp)
-                )
-            }
-
-            when (selectedTab) {
-                0 -> DriverDashboardTab(
-                    dashboard = dashboard,
-                    onViewAssignedQr = { showQrDialog = true },
-                    onScanTicket = {
-                        val options = ScanOptions().apply {
-                            setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-                            setPrompt("Scan passenger ticket QR")
-                            setBeepEnabled(true)
-                            setOrientationLocked(false)
-                        }
-                        scannerLauncher.launch(options)
-                    },
-                    onReportLostItem = { navController.navigate(Screen.LostItemReport.route) }
-                )
-                1 -> DriverScheduleTab(schedule)
-                2 -> DriverAlertsTab(alerts, validationResult)
-            }
-        }
-    }
-
-    if (showQrDialog) {
-        AssignedQrDialog(
-            qr = assignedQr,
-            qrBitmap = qrBitmap,
-            onDismiss = { showQrDialog = false },
-            onSave = {
-                qrBitmap?.let {
-                    val uri = saveQrToGallery(
-                        context = context,
-                        bitmap = it,
-                        filenameBase = assignedQr?.qrLabel ?: "assigned_bus_qr"
-                    )
-                    if (uri != null) infoMessage = "QR saved to device gallery"
-                }
-            },
-            onShare = {
-                qrBitmap?.let {
-                    val uri = saveQrToGallery(
-                        context = context,
-                        bitmap = it,
-                        filenameBase = assignedQr?.qrLabel ?: "assigned_bus_qr"
-                    )
-                    if (uri != null) {
-                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
-                            type = "image/png"
-                            putExtra(Intent.EXTRA_STREAM, uri)
-                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        }
-                        startActivity(
-                            context,
-                            Intent.createChooser(sendIntent, "Share assigned bus QR"),
-                            null
-                        )
-                    }
-                }
-            }
-        )
-    }
-}
-
-@Composable
-private fun DriverHeader(dashboard: DriverDashboardDto?) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Brush.verticalGradient(listOf(BgSurface, BgDeep)))
-            .padding(horizontal = 20.dp, vertical = 20.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(52.dp)
-                    .clip(CircleShape)
-                    .background(Brush.radialGradient(listOf(BlueElectric, BlueDark))),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    dashboard?.profileInitial ?: "DR",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
-            }
-            Spacer(Modifier.width(12.dp))
-            Column(Modifier.weight(1f)) {
-                Text(
-                    dashboard?.name ?: "Driver",
-                    color = TextPrimary,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
-                )
-                Text(
-                    dashboard?.depot ?: "Depot",
-                    color = TextSecondary,
-                    fontSize = 12.sp
-                )
-            }
-            StatusBadge(if (dashboard?.isOnline == true) "ONLINE" else "OFFLINE")
-        }
-    }
-}
-
-@Composable
-private fun DriverDashboardTab(
-    dashboard: DriverDashboardDto?,
-    onViewAssignedQr: () -> Unit,
-    onScanTicket: () -> Unit,
-    onReportLostItem: () -> Unit
-) {
-    LazyColumn(contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp)) {
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = BgCard)
-            ) {
-                Column(Modifier.padding(16.dp)) {
-                    Text("Current Route", color = TextSecondary, fontSize = 12.sp)
-                    Text(
-                        dashboard?.currentRoute ?: "No active route",
-                        color = TextPrimary,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(Modifier.height(12.dp))
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Button(onClick = onViewAssignedQr, modifier = Modifier.weight(1f)) {
-                            Icon(Icons.Default.QrCode, null)
-                            Spacer(Modifier.width(6.dp))
-                            Text("Assigned Bus QR")
-                        }
-                        Button(
-                            onClick = onScanTicket,
-                            modifier = Modifier.weight(1f),
-                            colors = ButtonDefaults.buttonColors(containerColor = GreenSuccess)
-                        ) {
-                            Icon(Icons.Default.QrCodeScanner, null)
-                            Spacer(Modifier.width(6.dp))
-                            Text("Scan Ticket")
-                        }
-                    }
-                    Spacer(Modifier.height(8.dp))
-                    OutlinedButton(
-                        onClick = onReportLostItem,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Icon(Icons.Default.FindInPage, null)
-                        Spacer(Modifier.width(6.dp))
-                        Text("Report Lost Item")
-                    }
-                }
-            }
-            Spacer(Modifier.height(12.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                DashboardStatCard(
-                    "Trips",
-                    (dashboard?.tripsToday ?: 0).toString(),
-                    Icons.Default.Route,
-                    modifier = Modifier.weight(1f)
-                )
-                DashboardStatCard(
-                    "On-Time",
-                    "${dashboard?.onTimePercentage ?: 0}%",
-                    Icons.Default.Timer,
-                    accentColor = GreenSuccess,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun DriverScheduleTab(schedule: DriverScheduleDto?) {
-    LazyColumn(contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp)) {
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = BgCard)
-            ) {
-                Column(Modifier.padding(16.dp)) {
-                    SectionHeader("Today Schedule")
-                    InfoRow("Assignment", schedule?.assignmentStatus ?: "-")
-                    InfoRow(
-                        "Route",
-                        "${schedule?.routeNumber ?: "-"} ${schedule?.routeName ?: ""}".trim()
-                    )
-                    InfoRow(
-                        "Direction",
-                        "${schedule?.originName ?: "-"} → ${schedule?.destinationName ?: "-"}"
-                    )
-                    InfoRow(
-                        "Bus",
-                        "${schedule?.busCode ?: "-"} ${schedule?.registrationNumber ?: ""}".trim()
-                    )
-                    InfoRow("Started", schedule?.startedAt ?: "-")
-                    InfoRow(
-                        "Active QR",
-                        if (schedule?.hasActiveQr == true) {
-                            schedule.activeQrLabel ?: "Available"
-                        } else {
-                            "Not Generated"
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun DriverAlertsTab(
-    alerts: List<DriverAlertDto>,
-    validationResult: TicketValidationResponse?
-) {
-    LazyColumn(contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp)) {
-        validationResult?.let { result ->
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (result.valid == true) {
-                            GreenSuccess.copy(alpha = 0.15f)
-                        } else {
-                            RedError.copy(alpha = 0.15f)
-                        }
-                    )
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = BgCard),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, BorderSubtle)
                 ) {
-                    Column(Modifier.padding(14.dp)) {
-                        Text(
-                            if (result.valid == true) "Ticket Valid" else "Ticket Invalid",
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(result.message ?: "", fontSize = 12.sp)
-                        Text(
-                            "Trip: ${result.tripRef ?: "-"} • Passenger: ${result.passengerName ?: "-"}",
-                            fontSize = 12.sp
-                        )
-                    }
-                }
-                Spacer(Modifier.height(10.dp))
-            }
-        }
-
-        if (alerts.isEmpty()) {
-            item { Text("No driver alerts.", color = TextMuted) }
-        }
-
-        items(alerts) { alert ->
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = BgCard)
-            ) {
-                Column(Modifier.padding(14.dp)) {
-                    Text(
-                        alert.title ?: "Alert",
-                        color = TextPrimary,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Text(
-                        alert.message ?: "",
-                        color = TextSecondary,
-                        fontSize = 12.sp
-                    )
-                    Text(
-                        alert.timestamp ?: "",
-                        color = TextMuted,
-                        fontSize = 11.sp
-                    )
-                }
-            }
-            Spacer(Modifier.height(10.dp))
-        }
-    }
-}
-
-@Composable
-private fun AssignedQrDialog(
-    qr: BusQrCodeDto?,
-    qrBitmap: Bitmap?,
-    onDismiss: () -> Unit,
-    onSave: () -> Unit,
-    onShare: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Assigned Bus QR") },
-        text = {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                if (qrBitmap != null) {
-                    Image(
-                        bitmap = qrBitmap.asImageBitmap(),
-                        contentDescription = "Assigned bus QR",
-                        modifier = Modifier.size(220.dp)
-                    )
-                }
-                Text(
-                    qr?.qrLabel ?: "No active QR assigned",
-                    fontSize = 12.sp,
-                    color = TextSecondary
-                )
-            }
-        },
-        confirmButton = {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                TextButton(onClick = onSave) { Text("Save") }
-                TextButton(onClick = onShare) { Text("Share") }
-                TextButton(onClick = onDismiss) { Text("Close") }
-            }
-        }
-    )
-}
-
-private fun generateQrBitmap(content: String, size: Int = 900): Bitmap {
-    val bits = MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, size, size)
-    val bmp = Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565)
-    for (x in 0 until size) {
-        for (y in 0 until size) {
-            bmp.setPixel(x, y, if (bits[x, y]) AndroidColor.BLACK else AndroidColor.WHITE)
-        }
-    }
-    return bmp
-}
-
-private fun saveQrToGallery(
-    context: android.content.Context,
-    bitmap: Bitmap,
-    filenameBase: String
-): Uri? {
-    val resolver = context.contentResolver
-    val filename = "${filenameBase.replace(" ", "_")}_${System.currentTimeMillis()}.png"
-
-    val values = ContentValues().apply {
-        put(MediaStore.Images.Media.DISPLAY_NAME, filename)
-        put(MediaStore.Images.Media.MIME_TYPE, "image/png")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/TransitShield")
-            put(MediaStore.Images.Media.IS_PENDING, 1)
-        }
-    }
-
-    val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: return null
-
-    return try {
-        resolver.openOutputStream(uri)?.use { outputStream ->
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-        } ?: return null
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            values.clear()
-            values.put(MediaStore.Images.Media.IS_PENDING, 0)
-            resolver.update(uri, values, null, null)
-        }
-        uri
-    } catch (_: Exception) {
-        null
-    }
-}
-
-@Composable
-private fun DriverBottomNav(
-    selectedTab: Int,
-    onTabSelected: (Int) -> Unit,
-    navController: NavController,
-    alertCount: Int
-) {
-    NavigationBar(containerColor = BgSurface, tonalElevation = 0.dp) {
-        val items = listOf(
-            Triple("Dashboard", Icons.Default.Dashboard, Screen.DriverHome.route),
-            Triple("Schedule", Icons.Default.EventNote, Screen.DriverHome.route),
-            Triple("Alerts", Icons.Default.NotificationsActive, Screen.DriverHome.route),
-            Triple("Profile", Icons.Default.Person, Screen.DriverProfile.route)
-        )
-
-        items.forEachIndexed { index, (label, icon, route) ->
-            NavigationBarItem(
-                selected = selectedTab == index,
-                onClick = {
-                    onTabSelected(index)
-                    if (index == 3) navController.navigate(route)
-                },
-                icon = {
-                    BadgedBox(
-                        badge = {
-                            if (index == 2 && alertCount > 0) {
-                                Badge { Text(alertCount.toString()) }
-                            }
-                        }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Brush.verticalGradient(listOf(BgSurface, BgCard)))
+                            .padding(16.dp)
                     ) {
-                        Icon(icon, contentDescription = label)
+                        Text("Demerit Status", color = TextSecondary, fontSize = 12.sp)
+                        Spacer(Modifier.height(6.dp))
+                        Text("2 / 5", color = RedError, fontWeight = FontWeight.ExtraBold, fontSize = 28.sp)
+                        Text("Keep your record clean to remain on duty.", color = TextMuted, fontSize = 12.sp)
                     }
-                },
-                label = { Text(label, fontSize = 11.sp) }
-            )
+                }
+            }
+
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    MetricCard(
+                        title = "Current Speed",
+                        value = "34 km/h",
+                        modifier = Modifier.weight(1f)
+                    )
+                    MetricCard(
+                        title = "Adherence",
+                        value = "92%",
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+
+            item {
+                Text("Active Alerts", color = TextPrimary, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+            }
+
+            if (loading) {
+                item {
+                    Box(modifier = Modifier.fillMaxWidth().padding(20.dp), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator(color = BlueElectric)
+                    }
+                }
+            }
+
+            error?.let { message ->
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(containerColor = RedError.copy(alpha = 0.12f))
+                    ) {
+                        Text(message, color = RedError, modifier = Modifier.padding(12.dp), fontSize = 12.sp)
+                    }
+                }
+            }
+
+            if (!loading && error == null && lostItems.isEmpty()) {
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(containerColor = BgCard),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, BorderSubtle)
+                    ) {
+                        Text(
+                            "No active lost-item alerts for your assigned bus.",
+                            color = TextSecondary,
+                            modifier = Modifier.padding(14.dp),
+                            fontSize = 13.sp
+                        )
+                    }
+                }
+            }
+
+            items(lostItems) { item ->
+                LostItemAlertCard(item)
+            }
         }
+    }
+}
+
+@Composable
+private fun MetricCard(title: String, value: String, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = BgCard),
+        border = androidx.compose.foundation.BorderStroke(1.dp, BorderSubtle)
+    ) {
+        Column(modifier = Modifier.padding(14.dp)) {
+            Text(title, color = TextSecondary, fontSize = 12.sp)
+            Spacer(Modifier.height(4.dp))
+            Text(value, color = TextPrimary, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
+@Composable
+private fun LostItemAlertCard(report: LostItemReportDto) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = BgCard),
+        border = androidx.compose.foundation.BorderStroke(1.dp, BorderSubtle)
+    ) {
+        Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(report.itemTitle ?: "Lost Item", color = TextPrimary, fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
+            Text(report.description ?: "No description provided", color = TextSecondary, fontSize = 12.sp)
+            Spacer(Modifier.height(4.dp))
+            Text("Reporter: ${report.reporterName ?: "Unknown"}", color = BlueElectric, fontSize = 12.sp)
+            Text("Phone: ${report.reporterPhoneNumber ?: "N/A"}", color = BlueElectric, fontSize = 12.sp)
+        }
+    }
+}
+
+@Composable
+private fun DriverBottomNav(onProfileClick: () -> Unit) {
+    NavigationBar(containerColor = BgSurface, tonalElevation = 0.dp) {
+        NavigationBarItem(selected = true, onClick = { }, icon = { Icon(Icons.Default.Dashboard, null) }, label = { Text("Dashboard") })
+        NavigationBarItem(selected = false, onClick = { }, icon = { Icon(Icons.Default.NotificationsActive, null) }, label = { Text("Alerts") })
+        NavigationBarItem(selected = false, onClick = onProfileClick, icon = { Icon(Icons.Default.Person, null) }, label = { Text("Profile") })
     }
 }

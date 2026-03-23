@@ -8,6 +8,7 @@ import {
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import RoutesAdmin from './pages/RoutesAdmin';
 
 const API_BASE = 'http://localhost:8080';
 
@@ -805,6 +806,7 @@ export default function App() {
     if (activeTab === 'Drivers') return <DriversModule />;
     if (activeTab === 'Buses & QR') return <BusManagement />;
     if (activeTab === 'Assignments') return <AssignmentManagement />;
+    if (activeTab === 'Routes & Stops') return <RoutesAdmin apiBase={API_BASE} />;
     if (activeTab === 'Lost & Found') return <LostFoundManagement />;
     return <PlaceholderModule tabName={activeTab} />;
   };
@@ -823,6 +825,7 @@ export default function App() {
           <SidebarItem icon={Users} label="Drivers" active={activeTab === 'Drivers'} onClick={() => setActiveTab('Drivers')} />
           <SidebarItem icon={Bus} label="Buses & QR" active={activeTab === 'Buses & QR'} onClick={() => setActiveTab('Buses & QR')} />
           <SidebarItem icon={UserPlus} label="Assignments" active={activeTab === 'Assignments'} onClick={() => setActiveTab('Assignments')} />
+          <SidebarItem icon={MapIcon} label="Routes & Stops" active={activeTab === 'Routes & Stops'} onClick={() => setActiveTab('Routes & Stops')} />
           <SidebarItem icon={Archive} label="Lost & Found" active={activeTab === 'Lost & Found'} onClick={() => setActiveTab('Lost & Found')} />
         </nav>
         <div className="p-4 border-t border-slate-200 dark:border-slate-800/80 space-y-2">

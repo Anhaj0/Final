@@ -1,8 +1,10 @@
 package com.transitshield.backend.service;
 
 import com.transitshield.backend.dto.UserDto;
+import com.transitshield.backend.entity.PassengerProfile;
 import com.transitshield.backend.entity.User;
 import com.transitshield.backend.entity.enums.UserRole;
+import com.transitshield.backend.repository.PassengerProfileRepository;
 import com.transitshield.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PassengerProfileRepository passengerProfileRepository;
     private final PasswordEncoder passwordEncoder;
 
     public List<UserDto> findAll() {
@@ -70,6 +73,12 @@ public class UserService {
         // Do NOT return password hash
         dto.setRole(user.getRole());
         dto.setIsActive(user.getIsActive());
+        if (user.getRole() == UserRole.PASSENGER) {
+            PassengerProfile profile = passengerProfileRepository.findByUserId(user.getId()).orElse(null);
+            dto.setWalletBalance(profile != null ? profile.getWalletBalance() : 0.0);
+        } else {
+            dto.setWalletBalance(0.0);
+        }
         dto.setCreatedAt(user.getCreatedAt());
         return dto;
     }

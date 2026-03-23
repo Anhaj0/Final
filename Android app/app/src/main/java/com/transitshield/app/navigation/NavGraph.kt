@@ -34,6 +34,7 @@ fun TransitShieldNavGraph(navController: NavHostController) {
         composable(Screen.Rewards.route) { RewardsScreen(navController) }
         composable(Screen.ComplaintSubmission.route) { ComplaintSubmissionScreen(navController) }
         composable(Screen.LostItemReport.route) { LostItemReportScreen(navController) }
+        composable(Screen.PassengerTasks.route) { PassengerTasksScreen(navController) }
         composable(Screen.RecentTrips.route) { RecentTripsScreen(navController) }
         composable(Screen.PassengerProfile.route) { PassengerProfileScreen(navController) }
 

@@ -23,7 +23,7 @@ public class BusController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BusDto> getById(@PathVariable Long id) {
+    public ResponseEntity<BusDto> getById(@PathVariable("id") Long id) {
         BusDto dto = busService.findById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
@@ -34,13 +34,13 @@ public class BusController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BusDto> update(@PathVariable Long id, @RequestBody BusDto dto) {
+    public ResponseEntity<BusDto> update(@PathVariable("id") Long id, @RequestBody BusDto dto) {
         BusDto updated = busService.update(id, dto);
         return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         busService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -50,7 +50,7 @@ public class BusController {
      * Returns null/empty if admin has not generated a QR for this bus yet.
      */
     @GetMapping("/{busId}/active-qr")
-    public ResponseEntity<BusQrCodeDto> getActiveQr(@PathVariable Long busId) {
+    public ResponseEntity<BusQrCodeDto> getActiveQr(@PathVariable("busId") Long busId) {
         BusQrCodeDto dto = qrFlowService.getActiveQrForBus(busId);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.noContent().build();
     }

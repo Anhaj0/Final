@@ -72,6 +72,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/rewards/**").hasRole("PASSENGER")
                 .requestMatchers("/api/qr/scan").hasRole("PASSENGER")
                 .requestMatchers("/api/trips/**").hasRole("PASSENGER")
+                .requestMatchers("/api/tasks/**").hasRole("PASSENGER")
 
                 // Passenger + Driver lost & found reporting
                 .requestMatchers("/api/lost-items/**").hasAnyRole("PASSENGER", "DRIVER")

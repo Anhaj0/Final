@@ -24,6 +24,11 @@ import com.transitshield.app.ui.theme.*
 @Composable
 fun PaymentScreen(navController: NavController) {
     var selectedMethod by remember { mutableStateOf("wallet") }
+    val distanceStops = 2
+    val baseFarePerStop = 22.5
+    val serviceFee = 0.0
+    val baseFare = baseFarePerStop * distanceStops
+    val totalPayable = baseFare + serviceFee
 
     Scaffold(
         topBar = { AppTopBar(title = "Payment", onBack = { navController.popBackStack() }) },
@@ -47,9 +52,9 @@ fun PaymentScreen(navController: NavController) {
                     SectionHeader("Fare Breakdown")
                     Spacer(Modifier.height(4.dp))
                     InfoRow("Route", "138 – Narahenpita → Nugegoda")
-                    InfoRow("Distance", "2 stops")
-                    InfoRow("Base Fare", "LKR 45.00")
-                    InfoRow("Service Fee", "LKR 0.00")
+                    InfoRow("Distance", "$distanceStops stops")
+                    InfoRow("Base Fare", "LKR %.2f".format(baseFare))
+                    InfoRow("Service Fee", "LKR %.2f".format(serviceFee))
                     Spacer(Modifier.height(8.dp))
                     Box(
                         modifier = Modifier
@@ -60,7 +65,7 @@ fun PaymentScreen(navController: NavController) {
                     ) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                             Text("Total Payable", color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                            Text("LKR 45.00", color = BlueElectric, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
+                            Text("LKR %.2f".format(totalPayable), color = BlueElectric, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
                         }
                     }
                 }
@@ -119,7 +124,7 @@ fun PaymentScreen(navController: NavController) {
             Spacer(Modifier.height(24.dp))
 
             PrimaryButton(
-                text = "Confirm Payment – LKR 45.00",
+                text = "Confirm Payment – LKR %.2f".format(totalPayable),
                 onClick = { navController.navigate(Screen.DigitalReceipt.route) }
             )
 
