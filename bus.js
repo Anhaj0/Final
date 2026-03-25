@@ -8,7 +8,7 @@ const Bus = sequelize.define('Bus', {
     route: { type: DataTypes.STRING, allowNull: false },
     location: { type: DataTypes.JSONB, defaultValue: { lat: 0, lng: 0 } }
 });
-
+//bus
 Bus.belongsTo(User, { as: 'driver', foreignKey: 'driverId' });
 
 module.exports = Bus;
