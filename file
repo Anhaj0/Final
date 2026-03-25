@@ -1,0 +1,52 @@
+[33mabdc883[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mamasha[m[33m, [m[1;31morigin/amasha[m[33m)[m Third update
+[33m6cf3e01[m Another update
+[33m28bb504[m Added amasha.txt
+[33mf8716fd[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Merge pull request #11 from Anhaj0/binara
+[33md118e57[m[33m ([m[1;31morigin/binara[m[33m)[m Refactor Reward model definition in rewrad.js
+[33m1692d95[m Merge pull request #10 from Anhaj0/binara
+[33mb3c3bd7[m Merge branch 'main' into binara
+[33mce38c66[m Refactor reward controller code structure
+[33mb9f2d66[m Refactor reward controller for clarity and export
+[33maf05fd5[m Export addPoints function in rewardcontroller.js
+[33m026877a[m Merge pull request #9 from Anhaj0/binara
+[33ma77ea20[m  Bus model in bus.js
+[33m601249c[m  dependencies section in package.json
+[33m38d3759[m Refactor Bus model definition in bus.js
+[33m8dbad81[m Merge pull request #8 from Anhaj0/binara
+[33m4297571[m  LostFound model with  export
+[33m3857427[m Fix  in db.js
+[33m04524b5[m Refactor db.js for improved readability
+[33mc0b05a0[m complaint.js for improved
+[33mda18343[m Refactor bus controller functions for clarity
+[33meb9cf51[m Refactor app.js for improved structure
+[33m681f4fd[m Refactor User model definition in User.js
+[33m41473c3[m Merge pull request #7 from Anhaj0/binara
+[33m1b2626f[m adding
+[33m986725c[m adding
+[33m4226b5b[m adding
+[33m8c15187[m adding
+[33mf239ddd[m adding
+[33mf3703bf[m adding
+[33md4eefed[m adding
+[33m6d8f726[m Merge pull request #6 from Anhaj0/binara
+[33m9e2d3b7[m Add Login component with form and button
+[33m3d358c6[m Add basic styling for login page
+[33m600f5fa[m Add App component with Login page import
+[33mf3d6f2b[m Add Button component with text and click handler
+[33m116d7b4[m Fix HTML structure and add headers
+[33m4061f0c[m add files
+[33mf294012[m adding
+[33med93563[m adding
+[33m76648cd[m Add files via upload
+[33m46e4ae0[m Merge pull request #5 from Anhaj0/codex/implement-core-transit-loop-changes
+[33m593a0b2[m[33m ([m[1;31morigin/codex/implement-core-transit-loop-changes[m[33m)[m Wire complaint submission API and include busId in lost item payload
+[33m979f53c[m Backup: Pre-cleanup snapshot with existing network and QR bugs
+[33m174e1d8[m Merge pull request #3 from Anhaj0/codex/locate-issues-in-android/spring-boot-app
+[33m0cf7e14[m Add routes admin page and fix live tracker/task navigation
+[33mc0cc269[m Backup: Pre-cleanup snapshot with existing network and QR bugs
+[33m2317460[m Merge pull request #2 from Anhaj0/codex/finalize-transitshield-project-gaps-mexkva
+[33m5345808[m Merge branch 'main' into codex/finalize-transitshield-project-gaps-mexkva
+[33m2e4747f[m Fix DriverHomeScreen scanner and image/output stream compile issues
+[33m9d89a33[m Merge pull request #1 from Anhaj0/codex/finalize-transitshield-project-gaps
+[33md32018f[m Implement end-to-end Lost & Found backend, Android, and admin web
+[33m4250dfa[m Checkpoint: current TransitShield project state
