@@ -35,7 +35,7 @@ axios.interceptors.response.use(
   }
 );
 
-// ─── Auth Context ────────────────────────────────────────────
+// ____________Auth Context_______________
 const useAuth = () => {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('ts_user');
