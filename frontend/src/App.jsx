@@ -68,7 +68,7 @@ const useAuth = () => {
   return { user, login, registerPassenger, logout };
 };
 
-// ─── Login Page ──────────────────────────────────────────────
+// ───------------ Login Page ──────────────────────────────────────────────
 const LoginPage = ({ onLogin, onSwitchToRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
