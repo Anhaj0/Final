@@ -8,7 +8,7 @@ const LostFound = sequelize.define('LostFound', {
     description: { type: DataTypes.TEXT },
     status: { type: DataTypes.ENUM('lost','found','returned'), defaultValue: 'lost' }
 });
-
+//lost and found
 LostFound.belongsTo(User);
 
 module.exports = LostFound;

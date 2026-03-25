@@ -6,6 +6,7 @@ const sequelize = require('./config/db');
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+//adding
 
 const userRoutes = require('./routes/userRoutes');
 const busRoutes = require('./routes/busRoutes');
