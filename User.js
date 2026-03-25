@@ -10,3 +10,4 @@ const User = sequelize.define('User', {
 
 module.exports = User;
 
+// add user js
