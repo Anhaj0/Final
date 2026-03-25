@@ -1,5 +1,5 @@
 const Reward = require('../models/Reward');
-
+//exports
 exports.getUserPoints = async (req, res) => {
     const { userId } = req.params;
     const reward = await Reward.findOne({ where: { UserId: userId } });
