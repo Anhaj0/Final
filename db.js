@@ -6,7 +6,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: 'postgres',
     logging: false
 });
-//sequlize
+//sequlized
 
 sequelize.authenticate()
     .then(() => console.log('Database connected...'))
