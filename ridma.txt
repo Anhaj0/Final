@@ -2,3 +2,4 @@ Contributions by Ridma:
  fixed a login bug
  Improved code readability
  fixed bug on passsengertrip
+ Cleaned repository structure
