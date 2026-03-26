@@ -35,7 +35,7 @@ axios.interceptors.response.use(
   }
 );
 
-// ─── Auth Context ────────────────────────────────────────────
+// ____________Auth Context_______________
 const useAuth = () => {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('ts_user');
@@ -68,7 +68,7 @@ const useAuth = () => {
   return { user, login, registerPassenger, logout };
 };
 
-// ─── Login Page ──────────────────────────────────────────────
+// ───------------ Login Page ──────────────────────────────────────────────
 const LoginPage = ({ onLogin, onSwitchToRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
