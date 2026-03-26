@@ -53,6 +53,7 @@ fun PaymentScreen(navController: NavController) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val scanResponse = PassengerTripFlowStore.qrScanResponse
+    val selectedBoardingStop = PassengerTripFlowStore.selectedBoardingStop
     val selectedDestination = PassengerTripFlowStore.selectedDestinationStop
     val passengerId = PassengerTripFlowStore.passengerId
     val fare = PassengerTripFlowStore.farePreview
@@ -87,7 +88,7 @@ fun PaymentScreen(navController: NavController) {
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            if (scanResponse == null || selectedDestination == null || fare == null || passengerId == null) {
+            if (scanResponse == null || selectedBoardingStop == null || selectedDestination == null || fare == null || passengerId == null) {
                 Text("Trip details are incomplete. Please scan again.", color = TextPrimary)
                 return@Column
             }
@@ -100,7 +101,7 @@ fun PaymentScreen(navController: NavController) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     SectionHeader("Fare Breakdown")
                     InfoRow("Bus", scanResponse.busDisplayName ?: "-")
-                    InfoRow("Boarding", scanResponse.orderedStops?.firstOrNull { it.id == scanResponse.nearestBoardingStopId }?.stopName ?: "-")
+                    InfoRow("Boarding", selectedBoardingStop.stopName ?: "-")
                     InfoRow("Destination", selectedDestination.stopName ?: "-")
                     InfoRow("Total Payable", "LKR ${"%.2f".format(fare)}")
                 }
@@ -130,7 +131,7 @@ fun PaymentScreen(navController: NavController) {
                 text = "Confirm Payment - LKR ${"%.2f".format(fare)}",
                 onClick = {
                     val busAssignmentId = scanResponse.busAssignmentId
-                    val boardingStopId = scanResponse.nearestBoardingStopId
+                    val boardingStopId = selectedBoardingStop.id
                     val destinationStopId = selectedDestination.id
                     val qrToken = PassengerTripFlowStore.qrToken
 

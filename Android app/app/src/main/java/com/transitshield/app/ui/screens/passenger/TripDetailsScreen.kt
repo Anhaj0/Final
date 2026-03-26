@@ -54,7 +54,13 @@ fun TripDetailsScreen(navController: NavController) {
     val context = LocalContext.current
     val scanResponse = PassengerTripFlowStore.qrScanResponse
     val orderedStops = scanResponse?.orderedStops.orEmpty()
-    val boardingStopId = scanResponse?.nearestBoardingStopId
+    val defaultBoardingStop = remember(scanResponse?.nearestBoardingStopId, orderedStops) {
+        orderedStops.firstOrNull { it.id == scanResponse?.nearestBoardingStopId } ?: orderedStops.firstOrNull()
+    }
+    var selectedBoardingStop by remember(scanResponse?.busAssignmentId, defaultBoardingStop?.id) {
+        mutableStateOf(PassengerTripFlowStore.selectedBoardingStop ?: defaultBoardingStop)
+    }
+    val boardingStopId = selectedBoardingStop?.id
     val boardingIndex = orderedStops.indexOfFirst { it.id == boardingStopId }.let { if (it >= 0) it else 0 }
     val selectableStops = if (orderedStops.size > boardingIndex + 1) orderedStops.drop(boardingIndex + 1) else emptyList()
 
@@ -63,6 +69,7 @@ fun TripDetailsScreen(navController: NavController) {
     }
     var fare by remember { mutableStateOf(PassengerTripFlowStore.farePreview) }
     var balance by remember { mutableStateOf(PassengerTripFlowStore.passengerBalance?.walletBalance) }
+    var boardingDropdownExpanded by remember { mutableStateOf(false) }
     var dropdownExpanded by remember { mutableStateOf(false) }
     var loadingFare by remember { mutableStateOf(false) }
 
@@ -79,6 +86,22 @@ fun TripDetailsScreen(navController: NavController) {
             PassengerTripFlowStore.passengerBalance = balanceDto
             balance = balanceDto.walletBalance
         } catch (_: Exception) {
+        }
+    }
+
+    LaunchedEffect(selectedBoardingStop?.id, scanResponse?.busAssignmentId) {
+        PassengerTripFlowStore.selectedBoardingStop = selectedBoardingStop
+
+        if (selectedBoardingStop == null) {
+            selectedDestination = null
+            PassengerTripFlowStore.selectedDestinationStop = null
+            PassengerTripFlowStore.farePreview = null
+            fare = null
+            return@LaunchedEffect
+        }
+
+        if (selectedDestination == null || selectableStops.none { it.id == selectedDestination?.id }) {
+            selectedDestination = selectableStops.firstOrNull()
         }
     }
 
@@ -146,14 +169,41 @@ fun TripDetailsScreen(navController: NavController) {
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     SectionHeader("Your Journey")
-                    InfoRow("Boarding Stop", orderedStops.getOrNull(boardingIndex)?.stopName ?: "-")
+                    Text("Boarding Stop", color = TextMuted, fontSize = 12.sp)
+                    OutlinedButton(
+                        onClick = { boardingDropdownExpanded = true },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(selectedBoardingStop?.stopName ?: "Select boarding stop")
+                    }
+                    DropdownMenu(
+                        expanded = boardingDropdownExpanded,
+                        onDismissRequest = { boardingDropdownExpanded = false }
+                    ) {
+                        orderedStops.forEach { stop ->
+                            DropdownMenuItem(
+                                text = { Text(stop.stopName ?: "Stop ${stop.id}") },
+                                onClick = {
+                                    selectedBoardingStop = stop
+                                    boardingDropdownExpanded = false
+                                }
+                            )
+                        }
+                    }
                     Divider(color = BorderSubtle)
                     Text("Destination Stop", color = TextMuted, fontSize = 12.sp)
                     OutlinedButton(
                         onClick = { dropdownExpanded = true },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = selectableStops.isNotEmpty()
                     ) {
-                        Text(selectedDestination?.stopName ?: "Select destination")
+                        Text(
+                            when {
+                                selectedDestination != null -> selectedDestination?.stopName ?: "Select destination"
+                                selectableStops.isEmpty() -> "No later stops available"
+                                else -> "Select destination"
+                            }
+                        )
                     }
                     DropdownMenu(
                         expanded = dropdownExpanded,
@@ -217,10 +267,15 @@ fun TripDetailsScreen(navController: NavController) {
             PrimaryButton(
                 text = "Confirm Journey & Pay",
                 onClick = {
-                    if (selectedDestination?.id == null || fare == null) {
-                        Toast.makeText(context, "Select a destination first.", Toast.LENGTH_LONG).show()
+                    if (selectedBoardingStop?.id == null) {
+                        Toast.makeText(context, "Select a boarding stop first.", Toast.LENGTH_LONG).show()
                         return@PrimaryButton
                     }
+                    if (selectedDestination?.id == null || fare == null) {
+                        Toast.makeText(context, "Select a valid destination first.", Toast.LENGTH_LONG).show()
+                        return@PrimaryButton
+                    }
+                    PassengerTripFlowStore.selectedBoardingStop = selectedBoardingStop
                     PassengerTripFlowStore.selectedDestinationStop = selectedDestination
                     PassengerTripFlowStore.farePreview = fare
                     navController.navigate(Screen.Payment.route)

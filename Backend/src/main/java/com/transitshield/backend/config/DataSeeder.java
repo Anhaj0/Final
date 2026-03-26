@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class DataSeeder implements CommandLineRunner {
 
+    private static final String DEMO_ADMIN_TOKEN = "transitshield-demo-admin-token";
+
     private final UserRepository userRepository;
     private final PassengerProfileRepository passengerProfileRepository;
     private final DriverProfileRepository driverProfileRepository;
@@ -40,7 +42,9 @@ public class DataSeeder implements CommandLineRunner {
             adminUser.setEmail("admin@transitshield.com");
             adminUser.setPhoneNumber("0710000000");
             adminUser.setPassword(passwordEncoder.encode("admin123"));
-            adminUser.setToken(java.util.UUID.randomUUID().toString());
+            // Keep the admin token stable for local demo restarts so the web admin session
+            // is not invalidated every time Spring recreates the schema.
+            adminUser.setToken(DEMO_ADMIN_TOKEN);
             adminUser.setRole(UserRole.ADMIN);
             adminUser.setIsActive(true);
             adminUser.setCreatedAt(LocalDateTime.now());

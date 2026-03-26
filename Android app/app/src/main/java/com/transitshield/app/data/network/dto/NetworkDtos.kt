@@ -236,6 +236,7 @@ object PassengerTripFlowStore {
     var qrToken: String? = null
     var qrScanResponse: QrScanResponse? = null
     var passengerBalance: PassengerBalanceDto? = null
+    var selectedBoardingStop: StopDto? = null
     var selectedDestinationStop: StopDto? = null
     var farePreview: Double? = null
     var activeTrip: PassengerTripDto? = null
@@ -246,6 +247,7 @@ object PassengerTripFlowStore {
         lastCompletedTrip = completedTrip
         qrToken = null
         qrScanResponse = null
+        selectedBoardingStop = null
         selectedDestinationStop = null
         farePreview = null
         activeTrip = null
@@ -254,6 +256,7 @@ object PassengerTripFlowStore {
     fun resetForNewScan() {
         qrToken = null
         qrScanResponse = null
+        selectedBoardingStop = null
         selectedDestinationStop = null
         farePreview = null
         activeTrip = null

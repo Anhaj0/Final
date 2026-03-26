@@ -28,7 +28,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(
   res => res,
   err => {
-    if (err.response && err.response.status === 401) {
+    if (err.response && (err.response.status === 401 || err.response.status === 403)) {
       localStorage.removeItem('ts_user');
       window.location.reload();
     }
@@ -409,33 +409,47 @@ const BusManagement = () => {
     registrationNumber: '',
     busDisplayName: '',
     capacity: '',
-    operatorName: '',
+    driverProfileId: '',
+    routeVariantId: '',
     status: 'ACTIVE'
   };
   const [buses, setBuses] = useState([]);
+  const [drivers, setDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [qrMap, setQrMap] = useState({});
   const [genMsg, setGenMsg] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(emptyBus);
+  const hasDrivers = drivers.length > 0;
 
-  const fetchBuses = async () => {
+  const fetchBusData = async () => {
+    setLoading(true);
     try {
-      const res = await axios.get(`${API_BASE}/api/buses`);
-      setBuses(res.data);
+      const [busRes, driverRes] = await Promise.all([
+        axios.get(`${API_BASE}/api/buses`),
+        axios.get(`${API_BASE}/api/admin/driver-profiles`)
+      ]);
+
+      const activeDrivers = (driverRes.data || []).filter(driver => driver.isActive !== false);
+      setDrivers(activeDrivers);
+      setBuses(busRes.data || []);
+
       // Fetch active QR for each bus
       const qrs = {};
-      for (const bus of res.data) {
+      for (const bus of busRes.data || []) {
         try {
           const qrRes = await axios.get(`${API_BASE}/api/buses/${bus.id}/active-qr`);
           if (qrRes.data && qrRes.data.qrToken) qrs[bus.id] = qrRes.data;
         } catch { /* no QR */ }
       }
       setQrMap(qrs);
-    } catch { setBuses([]); }
+    } catch {
+      setBuses([]);
+      setDrivers([]);
+    }
     setLoading(false);
   };
-  useEffect(() => { fetchBuses(); }, []);
+  useEffect(() => { fetchBusData(); }, []);
 
   const generateQr = async (busId) => {
     setGenMsg('');
@@ -451,15 +465,34 @@ const BusManagement = () => {
   const saveBus = async (e) => {
     e.preventDefault();
     setGenMsg('');
+    if (!form.driverProfileId) {
+      setGenMsg('Please select a driver.');
+      return;
+    }
+    if (!hasDrivers) {
+      setGenMsg('No drivers available. Please create a driver first.');
+      return;
+    }
+
+    const payload = {
+      busCode: form.busCode,
+      registrationNumber: form.registrationNumber,
+      busDisplayName: form.busDisplayName,
+      capacity: Number(form.capacity),
+      driverProfileId: Number(form.driverProfileId),
+      routeVariantId: form.routeVariantId ? Number(form.routeVariantId) : null,
+      status: form.status
+    };
+
     try {
       if (editingId) {
-        await axios.put(`${API_BASE}/api/buses/${editingId}`, form);
+        await axios.put(`${API_BASE}/api/buses/${editingId}`, payload);
       } else {
-        await axios.post(`${API_BASE}/api/buses`, form);
+        await axios.post(`${API_BASE}/api/buses`, payload);
       }
       setForm(emptyBus);
       setEditingId(null);
-      fetchBuses();
+      fetchBusData();
     } catch (err) { 
       setGenMsg(err.response?.data?.message || 'Failed to save bus'); 
     }
@@ -472,7 +505,8 @@ const BusManagement = () => {
       registrationNumber: bus.registrationNumber || '',
       busDisplayName: bus.busDisplayName || '',
       capacity: bus.capacity || '',
-      operatorName: bus.operatorName || '',
+      driverProfileId: bus.driverProfileId ? String(bus.driverProfileId) : '',
+      routeVariantId: bus.routeVariantId ? String(bus.routeVariantId) : '',
       status: bus.status || 'ACTIVE'
     });
     setGenMsg('');
@@ -488,7 +522,7 @@ const BusManagement = () => {
         setForm(emptyBus);
       }
       setGenMsg('Bus deleted successfully');
-      fetchBuses();
+      fetchBusData();
     } catch (err) {
       setGenMsg(err.response?.data?.message || 'Failed to delete bus');
     }
@@ -501,20 +535,26 @@ const BusManagement = () => {
       </div>
 
       {genMsg && <div className="bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-400 text-sm rounded-xl px-4 py-3">{genMsg}</div>}
+      {!loading && !hasDrivers && <div className="bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 text-amber-700 dark:text-amber-400 text-sm rounded-xl px-4 py-3">No drivers available. Please create a driver first.</div>}
 
       <form onSubmit={saveBus} className="bg-white dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/50 rounded-2xl p-4 grid grid-cols-1 md:grid-cols-6 gap-3">
         <input value={form.busCode} onChange={e => setForm({ ...form, busCode: e.target.value.toUpperCase() })} placeholder="Bus Code" required className="px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" />
         <input value={form.registrationNumber} onChange={e => setForm({ ...form, registrationNumber: e.target.value.toUpperCase() })} placeholder="Registration Number" required className="px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" />
         <input value={form.busDisplayName} onChange={e => setForm({ ...form, busDisplayName: e.target.value })} placeholder="Bus Display Name" required className="px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" />
         <input value={form.capacity} onChange={e => setForm({ ...form, capacity: e.target.value })} placeholder="Capacity" type="number" min="1" required className="px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" />
-        <input value={form.operatorName} onChange={e => setForm({ ...form, operatorName: e.target.value })} placeholder="Operator Name" required className="px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all" />
+        <select value={form.driverProfileId} onChange={e => setForm({ ...form, driverProfileId: e.target.value })} required disabled={!hasDrivers} className="px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all disabled:opacity-60">
+          <option value="">{hasDrivers ? 'Select Driver' : 'No drivers available'}</option>
+          {drivers.map(driver => (
+            <option key={driver.id} value={driver.id}>{driver.fullName}</option>
+          ))}
+        </select>
         <div className="flex gap-3">
           <select value={form.status} onChange={e => setForm({ ...form, status: e.target.value })} className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
             <option value="ACTIVE">Active</option>
             <option value="INACTIVE">Inactive</option>
             <option value="MAINTENANCE">Maintenance</option>
           </select>
-          <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition-colors whitespace-nowrap">{editingId ? 'Update Bus' : 'Create Bus'}</button>
+          <button type="submit" disabled={!hasDrivers} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition-colors whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed">{editingId ? 'Update Bus' : 'Create Bus'}</button>
         </div>
       </form>
 
@@ -532,7 +572,7 @@ const BusManagement = () => {
               </div>
               <div className="text-sm text-slate-600 dark:text-slate-400 space-y-1 mb-4">
                 <p>Capacity: <span className="text-slate-800 dark:text-white font-medium">{bus.capacity}</span></p>
-                <p>Operator: <span className="text-slate-800 dark:text-white font-medium">{bus.operatorName}</span></p>
+                <p>Assigned Driver: <span className="text-slate-800 dark:text-white font-medium">{bus.driverFullName || 'No driver assigned'}</span></p>
               </div>
 
               <div className="flex gap-3 mb-4">

@@ -11,5 +11,10 @@ public class BusDto {
     private String busDisplayName;
     private Integer capacity;
     private String operatorName;
+    private Long driverProfileId;
+    private String driverFullName;
+    private Long activeAssignmentId;
+    private Long routeVariantId;
+    private String routeVariantLabel;
     private BusStatus status;
 }

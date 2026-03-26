@@ -62,14 +62,19 @@ fun QrScanScreen(navController: NavController) {
 
                 // 3. Fire the POST request
                 val response = RetrofitClient.apiService.scanQr(request)
-                val hasBoardingData = response.busAssignmentId != null &&
-                    response.routeVariantId != null &&
-                    !response.orderedStops.isNullOrEmpty()
+                val orderedStops = response.orderedStops.orEmpty()
+                val selectedBoardingStop = orderedStops.firstOrNull { it.id == response.nearestBoardingStopId }
+                    ?: orderedStops.firstOrNull()
 
-                if (!hasBoardingData) {
+                android.util.Log.d(
+                    "TRANSIT_DEBUG",
+                    "QR handoff -> orderedStops=${orderedStops.size}, nearestBoardingStopId=${response.nearestBoardingStopId}, selectedBoardingStopId=${selectedBoardingStop?.id}"
+                )
+
+                if (orderedStops.isEmpty()) {
                     Toast.makeText(
                         context,
-                        response.message ?: "This bus does not have an active route assignment.",
+                        response.message ?: "No boarding stops are configured for this QR.",
                         Toast.LENGTH_LONG
                     ).show()
                     return@launch
@@ -77,13 +82,14 @@ fun QrScanScreen(navController: NavController) {
 
                 Toast.makeText(
                     context,
-                    response.message ?: "QR validated successfully.",
-                    Toast.LENGTH_LONG
+                    "Stops: ${orderedStops.size}, suggested boarding: ${response.nearestBoardingStopId ?: "first stop fallback"}",
+                    Toast.LENGTH_SHORT
                 ).show()
                 PassengerTripFlowStore.resetForNewScan()
                 PassengerTripFlowStore.passengerId = passengerId
                 PassengerTripFlowStore.qrToken = scannedToken.trim()
                 PassengerTripFlowStore.qrScanResponse = response
+                PassengerTripFlowStore.selectedBoardingStop = selectedBoardingStop
                 navController.navigate(Screen.TripDetails.route) {
                     popUpTo(Screen.PassengerHome.route)
                 }
