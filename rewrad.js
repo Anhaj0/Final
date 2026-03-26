@@ -11,4 +11,5 @@ const Reward = sequelize.define('Reward', {
 Reward.belongsTo(User);
 
 module.exports = Reward;
+
 //
