@@ -1,3 +1,6 @@
-My first commit 
-Another update 
-Third update 
+Contributions by Amasha:
+
+- Added debug utility functions in JavaScript
+- Improved code readability
+- Removed unnecessary files (haq, file...)
+- Cleaned repository structure
