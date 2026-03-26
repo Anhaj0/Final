@@ -1,6 +1,7 @@
 {
   "name": "transitshield-backend",
   "version": "1.0.0",
+  "author": "Amasha",
   "description": "Backend for TransitShield App",
   "main": "app.js",
   "scripts": {
