@@ -1,0 +1,986 @@
+﻿Starting a Gradle Daemon, 2 stopped Daemons could not be reused, use --status for details
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :app:mergeLibDexDebug UP-TO-DATE
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeDebugNativeLibs UP-TO-DATE
+> Task :app:stripDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+
+> Task :app:compileDebugKotlin FAILED
+.\gradlew : e: file:///C:/Use
+rs/Anhaj/Documents/NIBM/HND/F
+inal/Android%20app/app/src/ma
+in/java/com/transitshield/app
+/data/network/RetrofitClient.
+kt:28:26 Const 'val' 
+initializer should be a 
+constant value.
+At line:1 char:1
++ .\gradlew assembleDebug 
+--console=plain > 
+build_output.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: (e: file  
+  :///C:/U...constant valu   
+ e.:String) [], RemoteExc    
+eption
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverHomeScreen.kt:98
+:50 Unresolved reference 
+'driver'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverHomeScreen.kt:10
+2:33 Unresolved reference 
+'driver'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverHomeScreen.kt:11
+2:41 Unresolved reference 
+'driver'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverHomeScreen.kt:11
+2:60 Unresolved reference 
+'driver'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverHomeScreen.kt:11
+6:46 Unresolved reference 
+'driver'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverHomeScreen.kt:11
+6:74 Unresolved reference 
+'driver'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverHomeScreen.kt:12
+1:45 Unresolved reference 
+'driver'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverHomeScreen.kt:12
+6:44 Unresolved reference 
+'driver'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverHomeScreen.kt:12
+7:45 Unresolved reference 
+'driver'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverHomeScreen.kt:16
+6:37 Unresolved reference 
+'driver'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverHomeScreen.kt:17
+2:40 Unresolved reference 
+'driver'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:31:17 Type 'androidx.compose
+.runtime.MutableState<com.tra
+nsitshield.app.data.network.d
+to.UserDto?>' has no method 
+'setValue(Nothing?, 
+KMutableProperty0<*>, ERROR 
+CLASS: Ambiguity: getValue, 
+[kotlin/getValue, 
+kotlin/getValue, 
+kotlin/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue])
+', so it cannot serve as a 
+delegate for var (read-write 
+property).
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:31:17 Property delegate 
+must have a 
+'getValue(Nothing?, 
+KMutableProperty0<*>)' 
+method. None of the 
+following functions is 
+applicable:
+fun <T> 
+Lazy<T>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): T
+fun <V> KProperty0<V>.getValu
+e(thisRef: Any?, property: 
+KProperty<*>): V
+fun <T, V> KProperty1<T, 
+V>.getValue(thisRef: T, 
+property: KProperty<*>): V
+fun <K, V> Map<K, 
+V>.getValue(key: K): V
+fun <V, V1 : V> Map<in 
+String, V>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): V1
+fun <V, V1 : V> 
+MutableMap<in String, out 
+V>.getValue(thisRef: Any?, 
+property: KProperty<*>): V1
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:32:22 Type 'androidx.compose
+.runtime.MutableState<kotlin.
+Boolean>' has no method 
+'setValue(Nothing?, 
+KMutableProperty0<*>, ERROR 
+CLASS: Ambiguity: getValue, 
+[kotlin/getValue, 
+kotlin/getValue, 
+kotlin/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue])
+', so it cannot serve as a 
+delegate for var (read-write 
+property).
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:32:22 Property delegate 
+must have a 
+'getValue(Nothing?, 
+KMutableProperty0<*>)' 
+method. None of the 
+following functions is 
+applicable:
+fun <T> 
+Lazy<T>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): T
+fun <V> KProperty0<V>.getValu
+e(thisRef: Any?, property: 
+KProperty<*>): V
+fun <T, V> KProperty1<T, 
+V>.getValue(thisRef: T, 
+property: KProperty<*>): V
+fun <K, V> Map<K, 
+V>.getValue(key: K): V
+fun <V, V1 : V> Map<in 
+String, V>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): V1
+fun <V, V1 : V> 
+MutableMap<in String, out 
+V>.getValue(thisRef: Any?, 
+property: KProperty<*>): V1
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:34:21 Type 'androidx.compose
+.runtime.MutableState<kotlin.
+String>' has no method 
+'setValue(Nothing?, 
+KMutableProperty0<*>, ERROR 
+CLASS: Ambiguity: getValue, 
+[kotlin/getValue, 
+kotlin/getValue, 
+kotlin/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue])
+', so it cannot serve as a 
+delegate for var (read-write 
+property).
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:34:21 Property delegate 
+must have a 
+'getValue(Nothing?, 
+KMutableProperty0<*>)' 
+method. None of the 
+following functions is 
+applicable:
+fun <T> 
+Lazy<T>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): T
+fun <V> KProperty0<V>.getValu
+e(thisRef: Any?, property: 
+KProperty<*>): V
+fun <T, V> KProperty1<T, 
+V>.getValue(thisRef: T, 
+property: KProperty<*>): V
+fun <K, V> Map<K, 
+V>.getValue(key: K): V
+fun <V, V1 : V> Map<in 
+String, V>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): V1
+fun <V, V1 : V> 
+MutableMap<in String, out 
+V>.getValue(thisRef: Any?, 
+property: KProperty<*>): V1
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:35:20 Type 'androidx.compose
+.runtime.MutableState<kotlin.
+String>' has no method 
+'setValue(Nothing?, 
+KMutableProperty0<*>, ERROR 
+CLASS: Ambiguity: getValue, 
+[kotlin/getValue, 
+kotlin/getValue, 
+kotlin/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue])
+', so it cannot serve as a 
+delegate for var (read-write 
+property).
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:35:20 Property delegate 
+must have a 
+'getValue(Nothing?, 
+KMutableProperty0<*>)' 
+method. None of the 
+following functions is 
+applicable:
+fun <T> 
+Lazy<T>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): T
+fun <V> KProperty0<V>.getValu
+e(thisRef: Any?, property: 
+KProperty<*>): V
+fun <T, V> KProperty1<T, 
+V>.getValue(thisRef: T, 
+property: KProperty<*>): V
+fun <K, V> Map<K, 
+V>.getValue(key: K): V
+fun <V, V1 : V> Map<in 
+String, V>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): V1
+fun <V, V1 : V> 
+MutableMap<in String, out 
+V>.getValue(thisRef: Any?, 
+property: KProperty<*>): V1
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:36:22 Type 'androidx.compose
+.runtime.MutableState<kotlin.
+String>' has no method 
+'setValue(Nothing?, 
+KMutableProperty0<*>, ERROR 
+CLASS: Ambiguity: getValue, 
+[kotlin/getValue, 
+kotlin/getValue, 
+kotlin/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue])
+', so it cannot serve as a 
+delegate for var (read-write 
+property).
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:36:22 Property delegate 
+must have a 
+'getValue(Nothing?, 
+KMutableProperty0<*>)' 
+method. None of the 
+following functions is 
+applicable:
+fun <T> 
+Lazy<T>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): T
+fun <V> KProperty0<V>.getValu
+e(thisRef: Any?, property: 
+KProperty<*>): V
+fun <T, V> KProperty1<T, 
+V>.getValue(thisRef: T, 
+property: KProperty<*>): V
+fun <K, V> Map<K, 
+V>.getValue(key: K): V
+fun <V, V1 : V> Map<in 
+String, V>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): V1
+fun <V, V1 : V> 
+MutableMap<in String, out 
+V>.getValue(thisRef: Any?, 
+property: KProperty<*>): V1
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:77:36 Unresolved reference 
+'fullName'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:77:55 Overload resolution 
+ambiguity between candidates:
+fun Char.uppercase(): String
+fun String.uppercase(): 
+String
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:80:32 Unresolved reference 
+'fullName'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:81:32 Unresolved reference 
+'email'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:84:43 Unresolved reference 
+'role'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:91:60 Unresolved reference 
+'id'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:94:63 Unresolved reference 
+'email'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:96:62 Unresolved reference 
+'role'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:97:66 Unresolved reference 
+'isActive'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:125:94 Unresolved reference 
+'it'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:125:110 @Composable 
+invocations can only happen 
+from the context of a 
+@Composable function
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:126:92 Unresolved reference 
+'it'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:126:108 @Composable 
+invocations can only happen 
+from the context of a 
+@Composable function
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:127:96 Unresolved reference 
+'it'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:127:112 @Composable 
+invocations can only happen 
+from the context of a 
+@Composable function
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:129:54 Unresolved reference 
+'id'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:130:50 Unresolved reference 
+'age'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:131:52 Unresolved reference 
+'phoneNumber'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:132:52 Unresolved reference 
+'email'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:148:61 Unresolved reference 
+'isActive'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+driver/DriverProfileScreen.kt
+:149:52 Unresolved reference 
+'createdAt'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:52:17 Type 'androidx.c
+ompose.runtime.MutableState<c
+om.transitshield.app.data.net
+work.dto.UserDto?>' has no 
+method 'setValue(Nothing?, 
+KMutableProperty0<*>, ERROR 
+CLASS: Ambiguity: getValue, 
+[kotlin/getValue, 
+kotlin/getValue, 
+kotlin/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue])
+', so it cannot serve as a 
+delegate for var (read-write 
+property).
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:52:17 Property 
+delegate must have a 
+'getValue(Nothing?, 
+KMutableProperty0<*>)' 
+method. None of the 
+following functions is 
+applicable:
+fun <T> 
+Lazy<T>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): T
+fun <V> KProperty0<V>.getValu
+e(thisRef: Any?, property: 
+KProperty<*>): V
+fun <T, V> KProperty1<T, 
+V>.getValue(thisRef: T, 
+property: KProperty<*>): V
+fun <K, V> Map<K, 
+V>.getValue(key: K): V
+fun <V, V1 : V> Map<in 
+String, V>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): V1
+fun <V, V1 : V> 
+MutableMap<in String, out 
+V>.getValue(thisRef: Any?, 
+property: KProperty<*>): V1
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:53:22 Type 'androidx.c
+ompose.runtime.MutableState<k
+otlin.Boolean>' has no 
+method 'setValue(Nothing?, 
+KMutableProperty0<*>, ERROR 
+CLASS: Ambiguity: getValue, 
+[kotlin/getValue, 
+kotlin/getValue, 
+kotlin/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue])
+', so it cannot serve as a 
+delegate for var (read-write 
+property).
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:53:22 Property 
+delegate must have a 
+'getValue(Nothing?, 
+KMutableProperty0<*>)' 
+method. None of the 
+following functions is 
+applicable:
+fun <T> 
+Lazy<T>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): T
+fun <V> KProperty0<V>.getValu
+e(thisRef: Any?, property: 
+KProperty<*>): V
+fun <T, V> KProperty1<T, 
+V>.getValue(thisRef: T, 
+property: KProperty<*>): V
+fun <K, V> Map<K, 
+V>.getValue(key: K): V
+fun <V, V1 : V> Map<in 
+String, V>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): V1
+fun <V, V1 : V> 
+MutableMap<in String, out 
+V>.getValue(thisRef: Any?, 
+property: KProperty<*>): V1
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:55:21 Type 'androidx.c
+ompose.runtime.MutableState<k
+otlin.String>' has no method 
+'setValue(Nothing?, 
+KMutableProperty0<*>, ERROR 
+CLASS: Ambiguity: getValue, 
+[kotlin/getValue, 
+kotlin/getValue, 
+kotlin/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue])
+', so it cannot serve as a 
+delegate for var (read-write 
+property).
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:55:21 Property 
+delegate must have a 
+'getValue(Nothing?, 
+KMutableProperty0<*>)' 
+method. None of the 
+following functions is 
+applicable:
+fun <T> 
+Lazy<T>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): T
+fun <V> KProperty0<V>.getValu
+e(thisRef: Any?, property: 
+KProperty<*>): V
+fun <T, V> KProperty1<T, 
+V>.getValue(thisRef: T, 
+property: KProperty<*>): V
+fun <K, V> Map<K, 
+V>.getValue(key: K): V
+fun <V, V1 : V> Map<in 
+String, V>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): V1
+fun <V, V1 : V> 
+MutableMap<in String, out 
+V>.getValue(thisRef: Any?, 
+property: KProperty<*>): V1
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:56:20 Type 'androidx.c
+ompose.runtime.MutableState<k
+otlin.String>' has no method 
+'setValue(Nothing?, 
+KMutableProperty0<*>, ERROR 
+CLASS: Ambiguity: getValue, 
+[kotlin/getValue, 
+kotlin/getValue, 
+kotlin/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue])
+', so it cannot serve as a 
+delegate for var (read-write 
+property).
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:56:20 Property 
+delegate must have a 
+'getValue(Nothing?, 
+KMutableProperty0<*>)' 
+method. None of the 
+following functions is 
+applicable:
+fun <T> 
+Lazy<T>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): T
+fun <V> KProperty0<V>.getValu
+e(thisRef: Any?, property: 
+KProperty<*>): V
+fun <T, V> KProperty1<T, 
+V>.getValue(thisRef: T, 
+property: KProperty<*>): V
+fun <K, V> Map<K, 
+V>.getValue(key: K): V
+fun <V, V1 : V> Map<in 
+String, V>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): V1
+fun <V, V1 : V> 
+MutableMap<in String, out 
+V>.getValue(thisRef: Any?, 
+property: KProperty<*>): V1
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:57:22 Type 'androidx.c
+ompose.runtime.MutableState<k
+otlin.String>' has no method 
+'setValue(Nothing?, 
+KMutableProperty0<*>, ERROR 
+CLASS: Ambiguity: getValue, 
+[kotlin/getValue, 
+kotlin/getValue, 
+kotlin/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue, 
+kotlin/collections/getValue])
+', so it cannot serve as a 
+delegate for var (read-write 
+property).
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:57:22 Property 
+delegate must have a 
+'getValue(Nothing?, 
+KMutableProperty0<*>)' 
+method. None of the 
+following functions is 
+applicable:
+fun <T> 
+Lazy<T>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): T
+fun <V> KProperty0<V>.getValu
+e(thisRef: Any?, property: 
+KProperty<*>): V
+fun <T, V> KProperty1<T, 
+V>.getValue(thisRef: T, 
+property: KProperty<*>): V
+fun <K, V> Map<K, 
+V>.getValue(key: K): V
+fun <V, V1 : V> Map<in 
+String, V>.getValue(thisRef: 
+Any?, property: 
+KProperty<*>): V1
+fun <V, V1 : V> 
+MutableMap<in String, out 
+V>.getValue(thisRef: Any?, 
+property: KProperty<*>): V1
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:99:36 Unresolved 
+reference 'fullName'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:99:55 Overload 
+resolution ambiguity between 
+candidates:
+fun Char.uppercase(): String
+fun String.uppercase(): 
+String
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:102:32 Unresolved 
+reference 'fullName'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:103:32 Unresolved 
+reference 'email'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:106:43 Unresolved 
+reference 'role'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:113:60 Unresolved 
+reference 'id'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:116:63 Unresolved 
+reference 'email'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:118:62 Unresolved 
+reference 'role'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:119:66 Unresolved 
+reference 'isActive'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:148:94 Unresolved 
+reference 'it'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:148:110 @Composable 
+invocations can only happen 
+from the context of a 
+@Composable function
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:149:92 Unresolved 
+reference 'it'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:149:108 @Composable 
+invocations can only happen 
+from the context of a 
+@Composable function
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:150:96 Unresolved 
+reference 'it'.
+28 actionable tasks: 1 executed, 27 up-to-date
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:150:112 @Composable 
+invocations can only happen 
+from the context of a 
+@Composable function
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:152:54 Unresolved 
+reference 'id'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:153:52 Unresolved 
+reference 'phoneNumber'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:154:50 Unresolved 
+reference 'age'.
+e: file:///C:/Users/Anhaj/Doc
+uments/NIBM/HND/Final/Android
+%20app/app/src/main/java/com/
+transitshield/app/ui/screens/
+passenger/ProfileAndTripsScre
+ens.kt:155:52 Unresolved 
+reference 'email'.
+
+FAILURE: Build failed with 
+an exception.
+
+* What went wrong:
+Execution failed for task 
+':app:compileDebugKotlin'.
+> A failure occurred while 
+executing org.jetbrains.kotli
+n.compilerRunner.GradleCompil
+erRunnerWithWorkers$GradleKot
+linCompilerWorkAction
+   > Compilation error. See 
+log for more details
+
+* Try:
+> Run with --stacktrace 
+option to get the stack 
+trace.
+> Run with --info or --debug 
+option to get more log 
+output.
+> Run with --scan to get 
+full insights.
+> Get more help at 
+https://help.gradle.org.
+
+BUILD FAILED in 59s
