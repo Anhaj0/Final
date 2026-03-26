@@ -13,3 +13,10 @@ sequelize.authenticate()
     .catch(err => console.log('Error: ' + err));
 
 module.exports = sequelize;
+
+// Utility function to check empty values
+function isEmpty(value) {
+  return value === null || value === undefined || value === "";
+}
+
+console.log("Check empty:", isEmpty(""));
