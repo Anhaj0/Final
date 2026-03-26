@@ -13,7 +13,7 @@ exports.updateLocation = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
-//export
+//_________Export________
 exports.getAllBuses = async (req, res) => {
     const buses = await Bus.findAll();
     res.json(buses);

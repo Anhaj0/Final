@@ -1,4 +1,4 @@
-//rewards modules
+//______ Rewards _________
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const User = require('./User');
@@ -11,3 +11,4 @@ const Reward = sequelize.define('Reward', {
 Reward.belongsTo(User);
 
 module.exports = Reward;
+//

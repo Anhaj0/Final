@@ -203,7 +203,7 @@ const RegisterPage = ({ onRegister, onSwitchToLogin }) => {
   );
 };
 
-// ─── Components ──────────────────────────────────────────────
+// ──--Components ──────────────────────────────────────────────
 const SidebarItem = ({ icon: Icon, label, active, onClick }) => (
   <div onClick={onClick} className={`flex items-center space-x-3 px-4 py-3 rounded-full cursor-pointer transition-all duration-200 ${active ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50'}`}>
     <Icon size={20} className={active ? 'text-white' : 'text-slate-500 dark:text-slate-400'} />
@@ -615,7 +615,7 @@ const LostFoundManagement = () => {
   );
 };
 
-// ─── Placeholder Module ──────────────────────────────────────
+// --------------------- Placeholder Module ──────────────────────────────────────
 const PlaceholderModule = ({ tabName }) => {
   const iconMap = {
     'Complaints': AlertTriangle,
