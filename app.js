@@ -24,3 +24,29 @@ sequelize.sync({ alter: true }).then(() => {
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
+
+// ===== Debug Utility Functions (Added by Amasha) =====
+
+function logInfo(message) {
+  console.log("[INFO]:", message);
+}
+
+function logWarning(message) {
+  console.log("[WARNING]:", message);
+}
+
+function logError(message) {
+  console.log("[ERROR]:", message);
+}
+
+// Test logs
+logInfo("Application started");
+logWarning("This is a sample warning");
+logError("This is a sample error");
+
+// Utility function
+function calculateSum(a, b) {
+  return a + b;
+}
+
+console.log("Sum:", calculateSum(5, 10));
